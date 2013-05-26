@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="resources" name="arp">
+
+    <description>
+        AR Photography
+    </description>
+
+    <property name="build.dir" value="/Library/WebServer/Documents/arp"/>
+    <!--<property name="build.dir" value="/var/www"/>-->
+
+    <target name="init">
+        <tstamp>
+            <format property="build.tstamp" pattern="yyyy-MM-dd HH:mm:ss"/>
+        </tstamp>
+        <echo message="Build timestamp: ${build.tstamp}"/>
+    </target>
+
+    <target name="clean" description="remove all built files">
+        <delete dir="${build.dir}">
+            <exclude name="uploads"/>
+        </delete>
+    </target>
+
+    <target name="resources" depends="init" description="copy resources and libraries">
+        <mkdir dir="${build.dir}"/>
+
+        <copy todir="${build.dir}">
+            <fileset dir="${basedir}">
+                <exclude name="build.xml"/>
+                <exclude name="*.iml"/>
+                <exclude name="*.ipr"/>
+                <exclude name="*.iws"/>
+                <exclude name="schema.sql"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="deploy" description="Deploy application as an expanded war"
+                depends="init, clean, resources"/>
+</project>
